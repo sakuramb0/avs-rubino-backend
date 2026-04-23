@@ -10,19 +10,32 @@
 // module.exports = admin;
 
 const admin = require('firebase-admin');
+const { getFirestore } = require('firebase-admin/firestore');
+const { getStorage } = require('firebase-admin/storage');
 
-// Inizializzazione dinamica tramite variabili d'ambiente (con .trim() di sicurezza contro gli spazi)
+// Prepariamo le variabili pulendole da eventuali spazi invisibili (fondamentale!)
+const projectId = (process.env.FIREBASE_PROJECT_ID || '').trim();
+const bucketName = (process.env.FIREBASE_STORAGE_BUCKET || '').trim();
+
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
-  projectId: (process.env.FIREBASE_PROJECT_ID || '').trim(),
-  storageBucket: (process.env.FIREBASE_STORAGE_BUCKET || '').trim()
+  projectId: projectId,
+  storageBucket: bucketName
 });
 
-// Recuperiamo l'istanza del database
-const db = admin.firestore();
+/**
+ * PATCH DI ROUTING ESPLICITO
+ * Forziamo l'SDK a ignorare i default di sistema e puntare alle risorse esatte.
+ */
 
-// PATCH ARCHITETTURALE: Forziamo esplicitamente l'SDK a puntare al database '(default)'.
-// Questo bypassa il glitch di routing di GCP e va a colpo sicuro.
-db.settings({ databaseId: 'default' });
+// 1. Blindatura Firestore: punta all'ID 'default' (quello creato da te)
+admin.firestore = () => getFirestore('default');
+
+// 2. Blindatura Storage: forza l'uso del bucket specifico passato nel .env
+admin.storage = () => {
+  return {
+    bucket: (name) => getStorage().bucket(name || bucketName)
+  };
+};
 
 module.exports = admin;
