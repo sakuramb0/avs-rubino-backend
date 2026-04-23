@@ -21,6 +21,11 @@ console.log("Project ID:", process.env.FIREBASE_PROJECT_ID);
 console.log("Storage Bucket:", process.env.FIREBASE_STORAGE_BUCKET);
 console.log("==================================");
 
+const admin = require('./firebase')
+const db = admin.firestore();
+
+console.log("⏳ Esecuzione test connessione diretta a Firestore...");
+
 db.collection('clinic_content').limit(1).get()
   .then(snapshot => {
     console.log("✅ FIRESTORE VIVO E VEGETO! Documenti trovati:", snapshot.size);
