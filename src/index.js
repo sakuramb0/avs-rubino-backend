@@ -16,8 +16,12 @@ app.use('/api/admin/content', authMiddleware, contentRoutes);
 app.use('/api/admin/upload', authMiddleware, uploadRoutes);
 app.use('/api/public/content', publicRoutes);
 
-const port = process.env.PORT || 8080;
+console.log("=== CHECK VARIABILI D'AMBIENTE ===");
+console.log("Project ID:", process.env.FIREBASE_PROJECT_ID);
+console.log("Storage Bucket:", process.env.FIREBASE_STORAGE_BUCKET);
+console.log("==================================");
 
+const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

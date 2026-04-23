@@ -42,7 +42,7 @@ router.post('/', upload.single('file'), async (req, res) => {
 
     stream.end(req.file.buffer);
   } catch (error) {
-    console.error(error);
+    console.error("🔥 ERRORE CRITICO NELLA ROTTA:", error);
     res.status(500).send('Internal Server Error');
   }
 });
