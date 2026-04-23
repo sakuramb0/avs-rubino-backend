@@ -1,7 +1,10 @@
 const admin = require('firebase-admin');
 
-// Initialize the Firebase Admin SDK
-// Uses Application Default Credentials (ADC) automatically
-admin.initializeApp();
+// Inizializzazione dinamica tramite variabili d'ambiente
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+});
 
 module.exports = admin;
