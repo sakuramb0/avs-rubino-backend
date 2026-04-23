@@ -21,7 +21,7 @@ console.log("Project ID:", process.env.FIREBASE_PROJECT_ID);
 console.log("Storage Bucket:", process.env.FIREBASE_STORAGE_BUCKET);
 console.log("==================================");
 
-const admin = require('./firebase')
+const admin = require('./config/firebase')
 const db = admin.firestore();
 
 console.log("⏳ Esecuzione test connessione diretta a Firestore...");
