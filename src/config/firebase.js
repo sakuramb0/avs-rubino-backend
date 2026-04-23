@@ -23,6 +23,6 @@ const db = admin.firestore();
 
 // PATCH ARCHITETTURALE: Forziamo esplicitamente l'SDK a puntare al database '(default)'.
 // Questo bypassa il glitch di routing di GCP e va a colpo sicuro.
-db.settings({ databaseId: '(default)' });
+db.settings({ databaseId: 'default' });
 
 module.exports = admin;
