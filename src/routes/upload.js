@@ -1,11 +1,9 @@
 const express = require('express');
 const multer = require('multer');
-const { Storage } = require('@google-cloud/storage');
 const crypto = require('crypto');
+const admin = require('../config/firebase');
 
 const router = express.Router();
-const storage = new Storage();
-const bucketName = process.env.GCS_BUCKET_NAME;
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -17,7 +15,7 @@ router.post('/', upload.single('file'), async (req, res) => {
   }
 
   try {
-    const bucket = storage.bucket(bucketName);
+    const bucket = admin.storage().bucket();
     const fileName = `${Date.now()}-${crypto.randomBytes(8).toString('hex')}-${req.file.originalname}`;
     const file = bucket.file(fileName);
 
@@ -36,7 +34,7 @@ router.post('/', upload.single('file'), async (req, res) => {
     stream.on('finish', async () => {
       // Make file public
       await file.makePublic();
-      const publicUrl = `https://storage.googleapis.com/${bucketName}/${fileName}`;
+      const publicUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
       res.status(200).json({ url: publicUrl });
     });
 
@@ -48,3 +46,4 @@ router.post('/', upload.single('file'), async (req, res) => {
 });
 
 module.exports = router;
+

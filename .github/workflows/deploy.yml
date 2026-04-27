@@ -39,7 +39,4 @@ jobs:
           service: 'avs-rubino-backend'
           image: 'gcr.io/${{ secrets.GCP_PROJECT_ID }}/avs-rubino-backend'
           region: 'europe-west1'
-          env_vars: |
-            FIREBASE_PROJECT_ID=${{ vars.FIREBASE_PROJECT_ID }}
-            FIREBASE_STORAGE_BUCKET=${{ vars.FIREBASE_STORAGE_BUCKET }}
           flags: '--port 8080 --allow-unauthenticated'
